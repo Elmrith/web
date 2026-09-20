@@ -1,0 +1,168 @@
+classDiagram
+    direction TB
+
+    class UserRole {
+        <<enumeration>>
+        ADMIN
+        VENDOR
+        SUPPLIER
+    }
+
+    class ProductStatus {
+        <<enumeration>>
+        PENDING
+        APPROVED
+        DENIED
+    }
+
+    class OrderStatus {
+        <<enumeration>>
+        PENDING
+        CONFIRMED
+        DELIVERED
+        CANCELLED
+    }
+
+    class DemandStatus {
+        <<enumeration>>
+        LOW
+        MEDIUM
+        HIGH
+    }
+
+    class User {
+        #String id
+        #String email
+        #String passwordHash
+        #String name
+        #String businessName
+        #String contactNumber
+        #String address
+        #UserRole role
+        #String profileImage
+        #Boolean isActive
+        #Boolean twoFactorEnabled
+        #Boolean notificationsEnabled
+        #DateTime createdAt
+        +login(email, password) Boolean
+        +logout() void
+        +updateProfile(data) Boolean
+        +changePassword(oldPass, newPass) Boolean
+        +enable2FA() Boolean
+    }
+
+    class Admin {
+        +viewPlatformStats() StatsDTO
+        +toggleUserStatus(userId, isActive) Boolean
+        +reviewProduct(productId, status, reason) Boolean
+        +updateSystemSettings(key, value) Boolean
+    }
+
+    class Vendor {
+        +browseMarketplace(category, search) ListProduct
+        +checkout(productId, quantity, deliveryDetails) Order
+        +viewOrders() ListOrder
+        +cancelOrder(orderId) Boolean
+        +getSpendSummary() DashboardStats
+    }
+
+    class Supplier {
+        +String paymayaNumber
+        +addProduct(productDTO) Product
+        +updateProduct(productId, productDTO) Boolean
+        +deleteProduct(productId) Boolean
+        +updateOrderStatus(orderId, newStatus) Boolean
+        +uploadProductImage(imageFile) String
+        +getSalesAnalytics() AnalyticsDTO
+    }
+
+    class Product {
+        +Int id
+        +String supplierId
+        +String supplierName
+        +String name
+        +Float price
+        +String description
+        +Int stockQuantity
+        +DemandStatus demandStatus
+        +String category
+        +String imageUrl
+        +ProductStatus status
+        +String rejectionReason
+        +DateTime createdAt
+        +isAvailable(requestedQty) Boolean
+        +deductStock(qty) Boolean
+        +restoreStock(qty) void
+        +setStatus(status, reason) void
+    }
+
+    class Order {
+        +Int id
+        +String vendorId
+        +String supplierId
+        +Int supplierOrderNumber
+        +Float totalAmount
+        +OrderStatus status
+        +String paymentMethod
+        +String deliveryAddress
+        +String deliveryNotes
+        +DateTime createdAt
+        +DateTime updatedAt
+        +calculateSubtotal() Float
+        +calculateDeliveryFee() Float
+        +updateStatus(newStatus) Boolean
+        +canCancel() Boolean
+    }
+
+    class OrderItem {
+        +Int id
+        +Int orderId
+        +Int productId
+        +String name
+        +Float priceAtOrder
+        +Int quantity
+        +String imageUrl
+        +getSubtotal() Float
+    }
+
+    class Notification {
+        +Int id
+        +String userId
+        +String title
+        +String message
+        +String type
+        +Boolean isRead
+        +DateTime createdAt
+        +markAsRead() void
+    }
+
+    class SecurityLog {
+        +Int id
+        +String userId
+        +String ip
+        +String action
+        +String meta
+        +DateTime createdAt
+        +log(action, meta) void
+    }
+
+    class Setting {
+        +String key
+        +String value
+        +DateTime updatedAt
+        +get(key) String
+        +set(key, value) void
+    }
+
+    User <|-- Admin
+    User <|-- Vendor
+    User <|-- Supplier
+
+    Supplier "1" --> "0..*" Product : owns & manages
+    Vendor "1" --> "0..*" Order : creates
+    Supplier "1" --> "0..*" Order : receives
+    Order "1" *-- "1..*" OrderItem : composed of
+    Product "1" <-- "0..*" OrderItem : snapshots
+    User "1" --> "0..*" Notification : receives
+    User "1" --> "0..*" SecurityLog : generates
+    Admin "1" ..> Setting : manages

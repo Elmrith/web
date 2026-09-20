@@ -1,0 +1,62 @@
+classDiagram
+    direction TB
+
+    class User {
+        +String id
+        +String name
+        +String email
+        +UserRole role
+    }
+
+    class Admin {
+        +manageUsers()
+        +updateSettings()
+    }
+
+    class Vendor {
+        +browseProducts()
+        +placeOrder()
+    }
+
+    class Supplier {
+        +manageProducts()
+        +fulfillOrders()
+        +viewAnalytics()
+    }
+
+    class Product {
+        +String name
+        +Float price
+        +Int stockQuantity
+        +String category
+        +ProductStatus status
+    }
+
+    class Order {
+        +String orderNumber
+        +Float totalAmount
+        +OrderStatus status
+        +String deliveryAddress
+    }
+
+    class OrderItem {
+        +Int quantity
+        +Float priceAtOrder
+    }
+
+    class Notification {
+        +String title
+        +String message
+        +Boolean isRead
+    }
+
+    User <|-- Admin
+    User <|-- Vendor
+    User <|-- Supplier
+
+    Supplier "1" --> "0..*" Product : catalogs & stocks
+    Vendor "1" --> "0..*" Order : places
+    Supplier "1" --> "0..*" Order : receives & fulfills
+    Order "1" *-- "1..*" OrderItem : contains
+    Product "1" <-- "0..*" OrderItem : references
+    User "1" --> "0..*" Notification : receives
