@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplies Marketplace - VendLink</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/lucide.min.js"></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased">
+  <div data-site-header></div>
+
+  <main class="page-shell max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    
+    <!-- Vendor Purchasing Activity Overview (Visible for Vendors) -->
+    
+    <section data-role-only="vendor" class="marketplace-overview bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-5" aria-labelledby="marketplaceOverviewTitle">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-700">Vendor Activity</span>
+          <h2 id="marketplaceOverviewTitle" class="text-xl font-black text-slate-900 mt-1"> Overview</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Real-time status of wholesale orders and spending across suppliers.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="vendor.html#procurement" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1">
+            <i data-lucide="pie-chart" class="w-3.5 h-3.5 text-blue-600"></i>
+            <span>Sourcing Breakdown</span>
+          </a>
+          <a href="orders.html" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition flex items-center gap-1">
+            <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+            <span>Track Orders</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+        <div class="bg-slate-50/80 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Orders</div>
+            <div id="marketplaceTotalOrders" class="text-xl font-black text-slate-900 mt-0.5">0</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-50/80 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+            <i data-lucide="clock" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Pending Orders</div>
+            <div id="marketplacePendingOrders" class="text-xl font-black text-amber-600 mt-0.5">0</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-50/80 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+            <i data-lucide="receipt" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Spend</div>
+            <div id="marketplaceTotalSpend" class="text-xl font-black text-slate-900 mt-0.5">₱0.00</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- Marketplace Header & Discovery Tools -->
+    <div class="space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm">
+              <i data-lucide="store" class="w-5 h-5"></i>
+            </div>
+            Wholesale Supplies Marketplace
+          </h1>
+          <p class="text-sm text-slate-500 mt-1">Browse and order fresh produce, grains, poultry, and kitchen essentials directly from verified producers.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Verified Food Distributors
+          </span>
+        </div>
+      </div>
+
+      <!-- Search & Filters Container -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <!-- Search Input -->
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+            <input type="text" id="searchInput" placeholder="Search rice, eggs, poultry, onions, oil, supplier..."
+              class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition">
+          </div>
+
+          <!-- Sort Dropdown -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0">Sort By:</span>
+            <select id="sortSelect" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:bg-white">
+              <option value="featured">Featured Supplies</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="stock-desc">Highest Stock</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Interactive Category Filter Pills -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1" id="categoryPills">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid Header -->
+    <div class="flex items-center justify-between">
+      <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
+        <span>Available Catalog</span>
+        <span id="marketProductCount" class="text-xs font-bold px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700">0 products</span>
+      </h2>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div class="col-span-full py-16 text-center text-slate-400">Loading marketplace supplies...</div>
+    </div>
+
+    <!-- Purchasing Insights Footer Section -->
+    
+    <section data-role-only="vendor" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6" aria-labelledby="marketplaceSummaryTitle">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div>
+          <p class="text-[10px] font-extrabold uppercase tracking-wider text-blue-600">Procurement Metrics</p>
+          <h2 id="marketplaceSummaryTitle" class="text-base font-black text-slate-900 mt-0.5">Purchasing Insights & Volume</h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="exportAnalyticsButton" type="button" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i><span>Export to Excel</span>
+          </button>
+          <a href="vendor.html#procurement" class="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
+            <span>Full Report</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      </div>
+      <div id="marketplaceSummaryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="col-span-full text-center text-slate-400 text-xs py-4">Loading your purchasing metrics...</div>
+      </div>
+    </section>
+    
+
+  </main>
+
+  <div data-site-footer></div>
+
+  <!-- Instant Checkout Modal for In-Page Ordering -->
+  
+  <div id="checkoutModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 hidden" role="dialog" aria-modal="true">
+    <div class="checkout-modal-panel bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-blue-100 text-blue-700">
+            <i data-lucide="zap" class="w-3 h-3"></i> Instant Wholesale Order
+          </span>
+          <h3 id="modalProdName" class="text-lg font-black text-slate-900 mt-1.5"></h3>
+          <p class="text-xs text-slate-500 mt-0.5">Supplied by <span id="modalSupplierName" class="font-bold text-slate-700"></span></p>
+        </div>
+        <button type="button" onclick="closeCheckoutModal()" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200/70 mb-5">
+        <div class="w-16 h-16 rounded-xl bg-white overflow-hidden flex items-center justify-center shrink-0 border border-slate-200 shadow-sm">
+          <img id="modalProductImage" src="" alt="" class="w-full h-full object-cover hidden">
+          <i id="modalProductPlaceholder" data-lucide="package" class="w-7 h-7 text-slate-300"></i>
+        </div>
+        <div class="min-w-0 flex-1">
+          <span id="modalCategory" class="inline-flex px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md bg-blue-100 text-blue-700"></span>
+          <div class="flex items-baseline justify-between gap-2 mt-1">
+            <div class="text-base font-black text-slate-900" id="modalUnitPrice">₱0.00</div>
+            <div id="modalStock" class="text-xs font-bold text-emerald-600"></div>
+          </div>
+        </div>
+      </div>
+
+      <form onsubmit="handleCheckoutSubmit(event)" class="space-y-5">
+        <input type="hidden" id="modalProdId">
+        <input type="hidden" id="modalRawPrice">
+        <input type="hidden" id="modalStockQuantity">
+        <div id="variantSelector" class="hidden p-3.5 rounded-xl border border-blue-200 bg-blue-50/60">
+          <label for="modalVariant" class="block text-xs font-bold text-slate-700 mb-1.5">Choose a variant <span class="text-red-500">*</span></label>
+          <select id="modalVariant" class="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700" onchange="selectCheckoutVariant(this.value)"></select>
+          <p id="variantSelectionError" class="hidden text-xs text-red-600 font-bold mt-1.5">Please select a variant.</p>
+        </div>
+
+        <div>
+          <label for="modalQuantity" class="block text-xs font-bold text-slate-700 mb-1.5">1. Order Quantity</label>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="updateQuantity(-1)" class="w-11 h-11 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 font-black text-lg transition">-</button>
+            <input type="number" id="modalQuantity" min="1" value="1" required oninput="calculateTotal()"
+              class="w-full h-11 text-center bg-slate-50 border border-slate-200 rounded-xl text-sm font-black text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600">
+            <button type="button" onclick="updateQuantity(1)" class="w-11 h-11 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-black text-lg shadow-sm transition">+</button>
+          </div>
+          <div class="flex items-center justify-between text-xs mt-1.5">
+            <span class="text-slate-400">Available: <strong id="modalStockHelper" class="text-slate-700">0 units</strong></span>
+            <span id="quantityError" class="hidden text-red-600 font-bold">Quantity exceeds stock limit!</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">2. Payment Method</label>
+          <div class="flex items-center justify-between gap-3 p-3.5 rounded-xl border border-blue-200 bg-blue-50/60">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="banknote" class="w-5 h-5 text-blue-600"></i>
+              <div>
+                <p class="text-xs font-black text-blue-950">Cash on Delivery (COD)</p>
+                <p class="text-[11px] text-blue-700">Payment collected upon delivery to your stall or store.</p>
+              </div>
+            </div>
+            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-600 text-white">Default</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="deliveryAddress" class="block text-xs font-bold text-slate-700 mb-1.5">3. Delivery Address</label>
+          <textarea id="deliveryAddress" rows="2" required maxlength="1000" placeholder="Enter complete stall/store address, street name, and barangay"
+            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600"></textarea>
+        </div>
+
+        <div>
+          <label for="deliveryNotes" class="block text-xs font-bold text-slate-700 mb-1.5">
+            Special Instructions <span class="font-normal text-slate-400">(optional)</span>
+          </label>
+          <textarea id="deliveryNotes" rows="2" maxlength="1000" placeholder="e.g. Contact phone, landmark, preferred delivery window"
+            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600"></textarea>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-2 text-xs">
+          <div class="flex justify-between text-slate-500 font-medium">
+            <span>Subtotal</span>
+            <span id="modalSubtotal" class="text-slate-800 font-bold">₱0.00</span>
+          </div>
+          <div class="flex justify-between text-slate-500 font-medium">
+            <span>Wholesale Delivery Fee</span>
+            <span id="modalDeliveryFee" class="text-slate-800 font-bold">₱150.00</span>
+          </div>
+          <div class="flex justify-between items-center pt-2 border-t border-slate-200/70 text-sm">
+            <span class="font-bold text-slate-800">Grand Total</span>
+            <span id="modalTotalPayable" class="text-xl font-black text-blue-600">₱0.00</span>
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeCheckoutModal()" class="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition">
+            Cancel
+          </button>
+          <button id="checkoutSubmitButton" type="submit" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-blue-500/25 transition flex items-center justify-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>Confirm Checkout</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script>
+    let products = [];
+    let currentCategory = 'all';
+    let currentSort = 'featured';
+    let checkoutProduct = null;
+
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[c]));
+
+    const safeImageUrl = value => {
+      const url = String(value ?? '').trim();
+      if (!url) return '';
+      if (/^(https:\/\/|\/|assets\/|uploads\/products\/)/i.test(url)) return url;
+      return '';
+    };
+
+    const formatPeso = value => '₱' + Number(value || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    async function exportVendorAnalytics() {
+      const button = document.getElementById('exportAnalyticsButton');
+      if (!button || typeof XLSX === 'undefined') {
+        alert('Excel export is temporarily unavailable.');
+        return;
+      }
+      const originalHtml = button.innerHTML;
+      button.disabled = true;
+      button.innerHTML = '<i data-lucide="loader-circle" class="w-3.5 h-3.5 animate-spin"></i><span>Preparing...</span>';
+      lucide.createIcons();
+      try {
+        const report = await API.get('api/vendor.php?action=report');
+        const summary = report.summary || {};
+        const summaryRows = [
+          ['Metric', 'Value'],
+          ['Units Purchased', summary.unitsPurchased || 0],
+          ['Procurement Spend', summary.procurementSpend || 0],
+          ['Completed Deliveries', summary.completedDeliveries || 0],
+          ['Active Suppliers', summary.activeSuppliers || 0]
+        ];
+        const orderRows = [['Date', 'Product', 'Supplier', 'Quantity', 'Unit Price', 'Status'], ...(report.orders || []).map(order => [order.createdAt, order.productName, order.supplierName, Number(order.quantity), Number(order.priceAtOrder), order.status])];
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(summaryRows), 'Summary');
+        XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(orderRows), 'Orders');
+        const vendorName = String(report.vendorName || 'vendor').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() || 'vendor';
+        XLSX.writeFile(workbook, `vendlink-report-${vendorName}-${new Date().toISOString().slice(0, 10)}.xlsx`);
+      } catch (error) {
+        console.error('Analytics export failed:', error);
+        alert('Failed to generate report, try again.');
+      } finally {
+        button.disabled = false;
+        button.innerHTML = originalHtml;
+        lucide.createIcons();
+      }
+    }
+
+    async function loadVendorOverview() {
+      if (document.body.classList.contains('role-admin')) return;
+      try {
+        const [summary, analytics] = await Promise.all([
+          API.get('api/vendor.php?action=summary'),
+          API.get('api/analytics.php')
+        ]);
+        
+        const totalOrdersEl = document.getElementById('marketplaceTotalOrders');
+        const pendingOrdersEl = document.getElementById('marketplacePendingOrders');
+        const totalSpendEl = document.getElementById('marketplaceTotalSpend');
+        
+        if (totalOrdersEl) totalOrdersEl.textContent = Number(summary?.totalOrders || 0);
+        if (pendingOrdersEl) pendingOrdersEl.textContent = Number(summary?.pendingOrders || 0);
+        if (totalSpendEl) totalSpendEl.textContent = formatPeso(summary?.totalSpend);
+
+        const top = analytics?.vendor?.top || {};
+        const summaryGrid = document.getElementById('marketplaceSummaryGrid');
+        if (summaryGrid) {
+          summaryGrid.innerHTML = [
+            ['package', 'Units Purchased', Number(top.totalUnitsPurchased || 0).toLocaleString(), 'bg-blue-50 text-blue-700 border-blue-100'],
+            ['wallet', 'Procurement Spend', formatPeso(top.totalProcurementSpend), 'bg-emerald-50 text-emerald-700 border-emerald-100'],
+            ['truck', 'Completed Deliveries', Number(top.totalCompletedDeliveries || 0), 'bg-amber-50 text-amber-700 border-amber-100'],
+            ['users', 'Active Suppliers', Number(top.activeSuppliers || 0), 'bg-purple-50 text-purple-700 border-purple-100']
+          ].map(([icon, label, value, cls]) => `
+            <div class="p-4 rounded-xl border ${cls} flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-white/70 flex items-center justify-center shrink-0">
+                <i data-lucide="${icon}" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <div class="text-[10px] uppercase font-bold tracking-wider opacity-80">${label}</div>
+                <div class="text-base font-black mt-0.5">${value}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Failed to load vendor overview:', err);
+      }
+    }
+
+    async function loadMarketplace() {
+      const grid = document.getElementById('productGrid');
+      try {
+        products = await API.get('api/products.php');
+        if (Array.isArray(products)) {
+          populateCategoryPills(products);
+          filterAndRender();
+        }
+      } catch (err) {
+        console.error('Marketplace catalog load failed:', err);
+        grid.innerHTML = '<div class="col-span-full p-4 bg-red-50 text-red-600 rounded-xl text-center text-sm">Unable to load products right now. Please try again later.</div>';
+      }
+    }
+
+    function populateCategoryPills(items) {
+      const container = document.getElementById('categoryPills');
+      if (!container) return;
+
+      const counts = { all: items.length };
+      items.forEach(p => {
+        const cat = p.category || 'General';
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+
+      const categories = [
+        { id: 'all', label: 'All Supplies' },
+        { id: 'Grains', label: 'Grains & Rice' },
+        { id: 'Poultry', label: 'Poultry & Meat' },
+        { id: 'Produce', label: 'Fresh Produce' },
+        { id: 'Baking', label: 'Baking' },
+        { id: 'Oils', label: 'Oils & Seasonings' }
+      ];
+
+      container.innerHTML = categories.map(c => `
+        <button type="button" onclick="selectCategory('${c.id}')"
+          class="marketplace-pill ${currentCategory === c.id ? 'marketplace-pill--active' : ''}">
+          <span>${c.label}</span>
+          <span class="marketplace-pill-count">${counts[c.id] || 0}</span>
+        </button>
+      `).join('');
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.marketplace-pill').forEach(btn => {
+        const match = btn.getAttribute('onclick')?.includes(`'${cat}'`);
+        btn.classList.toggle('marketplace-pill--active', Boolean(match));
+      });
+      filterAndRender();
+    }
+
+    function filterAndRender() {
+      const q = document.getElementById('searchInput')?.value.toLowerCase().trim() || '';
+      let list = products.filter(p => {
+        const matchesQuery = !q || p.name.toLowerCase().includes(q) || (p.category && p.category.toLowerCase().includes(q)) || (p.supplierBusinessName && p.supplierBusinessName.toLowerCase().includes(q));
+        const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
+        return matchesQuery && matchesCategory;
+      });
+
+      if (currentSort === 'price-asc') {
+        list.sort((a, b) => Number(a.price) - Number(b.price));
+      } else if (currentSort === 'price-desc') {
+        list.sort((a, b) => Number(b.price) - Number(a.price));
+      } else if (currentSort === 'stock-desc') {
+        list.sort((a, b) => Number(b.stockQuantity) - Number(a.stockQuantity));
+      }
+
+      renderProducts(list);
+    }
+
+    function renderProducts(items) {
+      const grid = document.getElementById('productGrid');
+      const countEl = document.getElementById('marketProductCount');
+      if (countEl) countEl.textContent = `${items.length} product${items.length === 1 ? '' : 's'}`;
+
+      const canOrder = !document.body.classList.contains('role-admin');
+
+      if (!items.length) {
+        grid.innerHTML = `
+          <div class="col-span-full py-16 text-center bg-white rounded-2xl border border-slate-200/80 p-8">
+            <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+              <i data-lucide="package-search" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-slate-800 text-base">No supplies found</h3>
+            <p class="text-xs text-slate-500 mt-1">Try clearing your search query or selecting another category.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      grid.innerHTML = items.map(p => {
+        const variants = Array.isArray(p.variants) ? p.variants : [];
+        const stock = variants.length ? variants.reduce((total, variant) => total + Number(variant.stockQuantity || 0), 0) : Number(p.stockQuantity);
+        const displayPrice = variants.length ? Math.min(...variants.map(variant => Number(variant.price))) : Number(p.price);
+        const isOutOfStock = stock <= 0;
+        const isLowStock = stock > 0 && stock < 15;
+
+        return `
+          <div class="market-card group">
+            <div class="market-card-media">
+              ${safeImageUrl(p.imageUrl) 
+                ? `<img src="${escapeHtml(safeImageUrl(p.imageUrl))}" alt="${escapeHtml(p.name)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">` 
+                : `<div class="w-full h-full flex items-center justify-center text-slate-300"><i data-lucide="package" class="w-12 h-12"></i></div>`}
+              
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-slate-900/75 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider">
+                ${escapeHtml(p.category || 'Supplies')}
+              </span>
+
+              <span class="absolute top-2.5 right-2.5 stock-pill ${
+                isOutOfStock ? 'stock-pill--out' : isLowStock ? 'stock-pill--low' : 'stock-pill--normal'
+              }">
+                ${isOutOfStock ? 'Out of stock' : isLowStock ? `${stock} left` : `${stock} in stock`}
+              </span>
+            </div>
+
+            <div class="market-card-content">
+              <div class="flex items-center gap-1 text-xs text-slate-500 font-medium mb-1 truncate">
+                <i data-lucide="store" class="w-3.5 h-3.5 text-blue-600 shrink-0"></i>
+                <span class="truncate">${escapeHtml(p.supplierBusinessName || p.supplierName || 'Verified Supplier')}</span>
+              </div>
+
+              <h3 class="font-bold text-slate-900 text-sm mb-1 line-clamp-1">${escapeHtml(p.name)}</h3>
+              <p class="text-xs text-slate-500 line-clamp-2 mb-4">${escapeHtml(p.description || 'Wholesale food supplies and ingredients for food stalls.')}</p>
+
+              <div class="market-card-footer">
+                <div>
+                  <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Wholesale Price</div>
+                  <div class="text-lg font-black text-slate-900">${variants.length ? 'From ' : ''}${formatPeso(displayPrice)}</div>
+                </div>
+
+                ${canOrder ? `
+                  <button type="button" data-order-id="${escapeHtml(p.id)}"
+                    class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1.5 ${isOutOfStock ? 'opacity-50 pointer-events-none' : ''}">
+                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                    <span>${isOutOfStock ? 'Sold Out' : 'Order Now'}</span>
+                  </button>
+                ` : `
+                  <span class="text-xs font-bold text-slate-400">Admin View</span>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Wire in-page checkout modal triggers
+      grid.querySelectorAll('[data-order-id]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = items.find(p => String(p.id) === btn.dataset.orderId);
+          if (item && Number(item.stockQuantity) > 0) {
+            openCheckoutModal(item);
+          }
+        });
+      });
+
+      lucide.createIcons();
+    }
+
+    // Checkout Modal Logic
+    async function openCheckoutModal(item) {
+      checkoutProduct = {
+        productId: item.id,
+        productName: item.name,
+        basePrice: Number(item.price),
+        baseStock: Number(item.stockQuantity),
+        unitPrice: Number(item.price),
+        stockQuantity: Number(item.stockQuantity),
+        supplierId: item.supplierId,
+        supplierName: item.supplierBusinessName || item.supplierName || 'Verified Supplier',
+        variants: Array.isArray(item.variants) ? item.variants : [],
+        variantId: null
+      };
+
+      document.getElementById('modalProdId').value = item.id;
+      document.getElementById('modalRawPrice').value = checkoutProduct.unitPrice;
+      document.getElementById('modalStockQuantity').value = checkoutProduct.stockQuantity;
+      document.getElementById('modalProdName').textContent = item.name;
+      document.getElementById('modalSupplierName').textContent = checkoutProduct.supplierName;
+      document.getElementById('modalCategory').textContent = item.category || 'Food Supplies';
+      renderCheckoutVariants(checkoutProduct.variants);
+      updateCheckoutVariantDisplay();
+      document.getElementById('quantityError')?.classList.add('hidden');
+
+      // Autofill delivery address from user profile
+      const addressInput = document.getElementById('deliveryAddress');
+      if (addressInput && !addressInput.value.trim()) {
+        try {
+          const profile = await API.get('api/profile.php');
+          if (profile?.address) addressInput.value = profile.address;
+        } catch (e) {}
+      }
+
+      const img = document.getElementById('modalProductImage');
+      const placeholder = document.getElementById('modalProductPlaceholder');
+      if (img) {
+        const src = safeImageUrl(item.imageUrl);
+        img.src = src;
+        img.classList.toggle('hidden', !src);
+        placeholder?.classList.toggle('hidden', Boolean(src));
+      }
+
+      const modal = document.getElementById('checkoutModal');
+      if (modal) modal.classList.remove('hidden');
+      lucide.createIcons();
+      document.getElementById('modalQuantity').focus({ preventScroll: true });
+    }
+
+    function updateCheckoutVariantDisplay() {
+      const variant = checkoutProduct?.variants?.find(item => String(item.id) === String(checkoutProduct.variantId));
+      const price = variant ? Number(variant.price) : Number(checkoutProduct?.basePrice || 0);
+      const stock = variant ? Number(variant.stockQuantity) : Number(checkoutProduct?.baseStock || 0);
+      checkoutProduct.unitPrice = price;
+      checkoutProduct.stockQuantity = stock;
+      document.getElementById('modalRawPrice').value = price;
+      document.getElementById('modalStockQuantity').value = stock;
+      document.getElementById('modalUnitPrice').textContent = formatPeso(price);
+      document.getElementById('modalStock').textContent = `${stock} in stock`;
+      document.getElementById('modalStockHelper').textContent = `${stock} units`;
+      document.getElementById('modalQuantity').max = stock;
+      document.getElementById('modalQuantity').value = stock > 0 ? 1 : 0;
+      document.getElementById('checkoutSubmitButton').disabled = stock <= 0 || (checkoutProduct.variants?.length > 0 && !checkoutProduct.variantId);
+      calculateTotal();
+    }
+
+    function selectCheckoutVariant(variantId) {
+      checkoutProduct.variantId = variantId || null;
+      document.getElementById('variantSelectionError')?.classList.add('hidden');
+      updateCheckoutVariantDisplay();
+    }
+
+    function renderCheckoutVariants(variants) {
+      const selector = document.getElementById('variantSelector');
+      const select = document.getElementById('modalVariant');
+      if (!selector || !select) return;
+      if (!variants?.length) {
+        selector.classList.add('hidden');
+        select.innerHTML = '';
+        return;
+      }
+      selector.classList.remove('hidden');
+      select.innerHTML = '<option value="">Select a variant</option>' + variants.map(variant => `<option value="${escapeHtml(variant.id)}">${escapeHtml(variant.name)} · ${formatPeso(variant.price)} · ${Number(variant.stockQuantity)} in stock</option>`).join('');
+      select.value = '';
+    }
+
+    function closeCheckoutModal() {
+      const modal = document.getElementById('checkoutModal');
+      if (modal) modal.classList.add('hidden');
+      const submitBtn = document.getElementById('checkoutSubmitButton');
+      if (submitBtn) submitBtn.disabled = false;
+    }
+
+    function updateQuantity(change) {
+      const input = document.getElementById('modalQuantity');
+      const max = Number(document.getElementById('modalStockQuantity').value) || 1;
+      const current = Number.parseInt(input.value, 10) || 1;
+      input.value = Math.min(max, Math.max(1, current + change));
+      calculateTotal();
+    }
+
+    function calculateTotal() {
+      const price = Number(document.getElementById('modalRawPrice')?.value) || 0;
+      const max = Number(document.getElementById('modalStockQuantity')?.value) || 1;
+      const input = document.getElementById('modalQuantity');
+      const quantity = Number.parseInt(input?.value, 10) || 1;
+      const validQuantity = Math.min(max, Math.max(1, quantity));
+      const subtotal = price * validQuantity;
+      const deliveryFee = subtotal >= 5000 ? 0 : 150;
+
+      if (input) input.value = validQuantity;
+      document.getElementById('quantityError')?.classList.toggle('hidden', quantity >= 1 && quantity <= max);
+
+      document.getElementById('modalSubtotal').textContent = formatPeso(subtotal);
+      document.getElementById('modalDeliveryFee').textContent = deliveryFee === 0 ? 'FREE (Orders ₱5,000+)' : formatPeso(deliveryFee);
+      document.getElementById('modalTotalPayable').textContent = formatPeso(subtotal + deliveryFee);
+
+      return { quantity: validQuantity, subtotal, deliveryFee, total: subtotal + deliveryFee };
+    }
+
+    async function handleCheckoutSubmit(event) {
+      event.preventDefault();
+      const button = document.getElementById('checkoutSubmitButton');
+      const summary = calculateTotal();
+      const address = document.getElementById('deliveryAddress')?.value.trim();
+
+      if (checkoutProduct?.variants?.length && !checkoutProduct.variantId) {
+        document.getElementById('variantSelectionError')?.classList.remove('hidden');
+        return;
+      }
+      if (!checkoutProduct || !address || summary.quantity < 1 || summary.quantity > checkoutProduct.stockQuantity) {
+        alert('Please specify a delivery address and valid quantity.');
+        return;
+      }
+
+      button.disabled = true;
+      button.innerHTML = '<i data-lucide="loader-circle" class="w-4 h-4 animate-spin"></i><span>Processing Order...</span>';
+      lucide.createIcons();
+
+      try {
+        const order = await API.post('api/orders.php', {
+          productId: checkoutProduct.productId,
+          variantId: checkoutProduct.variantId || null,
+          quantity: summary.quantity,
+          paymentMethod: 'Cash on Delivery',
+          deliveryAddress: address,
+          deliveryNotes: document.getElementById('deliveryNotes')?.value.trim() || ''
+        });
+
+        closeCheckoutModal();
+
+        // Toast feedback
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-5 right-5 z-[60] w-[min(24rem,calc(100vw-2rem))] rounded-2xl bg-emerald-600 text-white p-4 shadow-2xl border border-emerald-500 flex items-start gap-3';
+        toast.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <i data-lucide="check-circle-2" class="w-5 h-5 text-white"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-sm">Order Placed Successfully!</p>
+            <p class="text-xs text-emerald-100 mt-0.5">Receipt #${Number(order.supplierOrderNumber)} · ${formatPeso(order.totalAmount)}</p>
+            <a href="orders.html" class="inline-flex items-center gap-1 mt-2 text-xs font-bold text-white bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg transition">
+              <span>View in My Orders</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        `;
+        document.body.appendChild(toast);
+        lucide.createIcons();
+
+        // Reload data
+        loadMarketplace();
+        loadVendorOverview();
+
+        setTimeout(() => toast.remove(), 4000);
+      } catch (err) {
+        button.disabled = false;
+        button.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4"></i><span>Confirm Checkout</span>';
+        lucide.createIcons();
+        alert(err.message || 'Unable to place order. Please try again.');
+      }
+    }
+
+    document.getElementById('searchInput')?.addEventListener('input', filterAndRender);
+    document.getElementById('sortSelect')?.addEventListener('change', e => {
+      currentSort = e.target.value;
+      filterAndRender();
+    });
+    document.getElementById('exportAnalyticsButton')?.addEventListener('click', exportVendorAnalytics);
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const accessGranted = await window.vendLinkAccessReady;
+        if (accessGranted === false) return;
+      } catch (err) {
+        return;
+      }
+      loadMarketplace();
+      loadVendorOverview();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
